@@ -1,5 +1,6 @@
 <?php
-
+print 'This is my test';
+exit;
 /**
  * Laravel - A PHP Framework For Web Artisans
  *
