@@ -11,6 +11,62 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// })->name('home');
+
+Route::get('/', [
+	'uses' => 'DoctorController@getHome',
+	'as' => 'home'
+]);
+
+Route::post('/signup', [
+	'uses' => 'UserController@signUp',
+	'as' => 'signup'
+]);
+
+Route::post('/signin', [
+	'uses' => 'UserController@signIn',
+	'as' => 'signin'
+]);
+
+Route::get('/dashboard', [
+	'uses' => 'UserController@getDashboard',
+	'as' => 'dashboard',
+	'middleware' => 'auth'
+]);
+
+Route::get('/logout', [
+	'uses' => 'UserController@logOut',
+	'as' => 'logout'
+]);
+
+Route::get('/doctors', [
+	'uses' => 'DoctorController@getDoctors',
+	'as' => 'doctors'
+]);
+
+Route::get('/account', [
+	'uses' => 'UserController@myAccount',
+	'as' => 'account'
+]);
+
+Route::get('/managedoctor/{id?}', [
+	'uses' => 'DoctorController@manageDoctor',
+	'as' => 'doctor.manage',
+	'middleware' => 'auth'
+]);
+
+Route::get('/{filename}', [
+	'uses' => 'DoctorController@getDoctorImage',
+	'as' => 'doctor.image'
+]);
+
+Route::post('/savedoctor', [
+	'uses' => 'DoctorController@saveDoctor',
+	'as' => 'doctor.save'
+]);
+Route::post('/accountupdate', [
+	'uses' => 'UserController@updateAccount',
+	'as' => 'account.update'
+]);
