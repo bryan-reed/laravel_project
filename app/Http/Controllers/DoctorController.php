@@ -7,13 +7,14 @@ use Illuminate\Http\Response;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Auth;
 
 class DoctorController extends Controller
 {
 	public function getHome()
 	{
-		// $doctors = Doctor::all();
-		return view('welcome');
+		$doctors = Doctor::all();
+		return view('welcome', ['doctors' => $doctors, 'route' => 'doctor.view']);
 	}
 
 	public function saveDoctor(Request $request) 
@@ -50,13 +51,11 @@ class DoctorController extends Controller
 
 		$request->user()->doctors()->save($doctor);
 
+		$request->session()->flash('success', 'Doctor successfully saved!');
+
 		return redirect()->route('doctor.manage', ['id' => $doctor->id]);
 		
 		
-	}
-
-	public function getDoctors() {
-
 	}
 
 	public function getDoctorImage($filename) {
@@ -74,5 +73,13 @@ class DoctorController extends Controller
 		}
 			
 		return view('includes.doctorform', ['mode' => $mode, 'doctor' => $doctor]);
+	}
+
+	public function searchDoctors(Request $request) {
+		$doctors = Doctor::where('first_name', 'LIKE', '%'.$request['name'].'%')
+		->orWhere('last_name', 'LIKE', '%'.$request['name'].'%')
+		->get();
+		
+		return view('welcome', ['doctors' => $doctors, 'route' => 'doctor.view']);
 	}
 }

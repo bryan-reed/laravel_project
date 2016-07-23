@@ -9,6 +9,9 @@
 		@include('includes.navigation')
 		<div class="main @if(Auth::check()) col-sm-10 @else col-sm-12 @endif">
         	<h1 class="page-header">@if($mode == 'edit')Edit @else Add a @endif Doctor</h1>
+        	@if(Session::has('success'))
+        		<p class="alert alert-success">{{Session::get('success')}}</p>
+        	@endif
         	<form class="form-horizontal" action="{{route('doctor.save')}}" method="post" enctype="multipart/form-data">
         		<input type="hidden" name="_token" value="{{ Session::token() }}" />
         		<input type="hidden" name="doctor_id" value="{{$doctor->id}}" />

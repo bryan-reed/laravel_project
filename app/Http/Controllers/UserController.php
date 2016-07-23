@@ -85,4 +85,10 @@ class UserController extends Controller
 		$request->session()->flash('success', 'Account successfully updated!');
 		return redirect()->back();
 	}
+
+	public function getDoctors() {
+		
+		$user = User::find(Auth::user()->id);
+		return view('includes.doctors', ['doctors' => $user->doctors, 'route' => 'doctor.manage']);
+	}
 }

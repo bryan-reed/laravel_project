@@ -42,8 +42,13 @@ Route::get('/logout', [
 ]);
 
 Route::get('/doctors', [
-	'uses' => 'DoctorController@getDoctors',
+	'uses' => 'UserController@getDoctors',
 	'as' => 'doctors'
+]);
+
+Route::get('/search', [
+	'uses' => 'DoctorController@searchDoctors',
+	'as' => 'doctor.search'
 ]);
 
 Route::get('/account', [
@@ -51,10 +56,15 @@ Route::get('/account', [
 	'as' => 'account'
 ]);
 
-Route::get('/managedoctor/{id?}', [
+Route::get('/doctor/{id?}', [
 	'uses' => 'DoctorController@manageDoctor',
 	'as' => 'doctor.manage',
 	'middleware' => 'auth'
+]);
+
+Route::get('/doc/{id}', [
+	'uses' => 'DoctorController@getDoctor',
+	'as' => 'doctor.view'
 ]);
 
 Route::get('/{filename}', [
