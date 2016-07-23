@@ -80,3 +80,12 @@ Route::post('/accountupdate', [
 	'uses' => 'UserController@updateAccount',
 	'as' => 'account.update'
 ]);
+Route::get('delete/{id}', [
+	'uses' => 'DoctorController@deleteDoctor',
+	'as' => 'doctor.delete'
+]);
+
+Route::post('/review', [
+	'uses' => 'ReviewController@submitReview',
+	'as' => 'submit.review'
+]);

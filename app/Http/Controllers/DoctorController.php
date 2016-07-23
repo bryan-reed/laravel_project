@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Doctor;
+use App\Review;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\MessageBag;
@@ -76,10 +77,38 @@ class DoctorController extends Controller
 	}
 
 	public function searchDoctors(Request $request) {
-		$doctors = Doctor::where('first_name', 'LIKE', '%'.$request['name'].'%')
-		->orWhere('last_name', 'LIKE', '%'.$request['name'].'%')
+		$doctors = array();
+		$words = explode(' ', $request['name']);
+		$doctors = Doctor::where(function($query) use ($words) {
+			foreach ($words as $value) {
+				$query->orWhere('first_name', 'like', "%{$value}%");
+				$query->orWhere('last_name', 'like', "%{$value}%");
+			}
+		})
 		->get();
 		
 		return view('welcome', ['doctors' => $doctors, 'route' => 'doctor.view']);
 	}
+
+	public function getDoctor($id = null) {
+		if($id)
+			$doctor = Doctor::find($id);
+		
+		return view('includes.doctorview',['doctor' => $doctor]);
+	}
+
+	public function deleteDoctor($id = null) {
+
+		$doctor = Doctor::find($id);
+		$filename = $doctor->image;
+		//Delete existing file if it exists
+		if(Storage::disk('local')->has($filename)) {
+			Storage::delete($filename);
+		}
+		$doctor->delete();
+		return redirect()->route('doctors')->with(['message' => 'Doctor successfully deleted.']);
+
+	}
+
+	
 }

@@ -48,6 +48,9 @@
 				  <div class="form-group">
 				    <div class="col-sm-offset-1 col-sm-5">
 				      <button type="submit" class="btn btn-primary">Save</button>
+				      @if($mode == 'edit')
+				      	<a href="{{route('doctor.delete', ['id' => $doctor->id])}}" class="btn btn-danger">Delete</a>
+				      @endif
 				    </div>
 				  </div>
 				</form>

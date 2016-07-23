@@ -1,4 +1,4 @@
-@if(count($doctors))
+
 	@if(Request::route()->getName() != 'doctors')
 		<div class="row bottom_buffer">
 	    	<div class="col-xs-6"><h1>Doctors</h1></div>
@@ -15,6 +15,7 @@
 	        </div>
 	    </div>
     @endif
+@if(count($doctors))
 	<div class="row">
 		<ul class="media-list">
 			@foreach($doctors AS $doctor)
