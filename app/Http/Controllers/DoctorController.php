@@ -11,16 +11,19 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
 
 class DoctorController extends Controller
-{
+{	
+	//Get home page
 	public function getHome()
 	{
+		//Get all doctors
 		$doctors = Doctor::all();
 		return view('welcome', ['doctors' => $doctors, 'route' => 'doctor.view']);
 	}
-
+	//Save a doctor add/edit
 	public function saveDoctor(Request $request) 
 	{
 		$mode = $request->has('doctor_id')?'edit':'add';
+
 		//validation
 		$this->validate($request, [
 			'first_name' => 'required|max:100',
@@ -28,12 +31,13 @@ class DoctorController extends Controller
 			'bio' => 'required'
 		]);
 		
+		//Find doctor or create new one
 		if($mode == 'edit') {
 			$doctor = Doctor::find($request['doctor_id']);
 		} else {
 			$doctor = new Doctor();
 		}
-		
+		//Set attributes
 		$doctor->first_name = $request['first_name'];
 		$doctor->last_name = $request['last_name'];
 		$doctor->bio = $request['bio'];
@@ -49,21 +53,22 @@ class DoctorController extends Controller
 			Storage::disk('local')->put($filename, File::get($file));
 			$doctor->image = $filename;
 		}
-
+		//Save doctor associated with user who created them
 		$request->user()->doctors()->save($doctor);
 
+		//Pass success message back to screen
 		$request->session()->flash('success', 'Doctor successfully saved!');
 
 		return redirect()->route('doctor.manage', ['id' => $doctor->id]);
 		
 		
 	}
-
+	//For getting stored images in storage
 	public function getDoctorImage($filename) {
 		$file = Storage::disk('local')->get($filename);
 		return new Response($file, 200);
 	}
-
+	//Manage doctor view, add/edit
 	public function manageDoctor($id = null) {
 		$mode = 'add';
 		if($id) {
@@ -75,7 +80,7 @@ class DoctorController extends Controller
 			
 		return view('includes.doctorform', ['mode' => $mode, 'doctor' => $doctor]);
 	}
-
+	//Home page search functionality (simple)
 	public function searchDoctors(Request $request) {
 		$doctors = array();
 		$words = explode(' ', $request['name']);
@@ -89,14 +94,14 @@ class DoctorController extends Controller
 		
 		return view('welcome', ['doctors' => $doctors, 'route' => 'doctor.view']);
 	}
-
+	//Get doctor for public view
 	public function getDoctor($id = null) {
 		if($id)
 			$doctor = Doctor::find($id);
 		
 		return view('includes.doctorview',['doctor' => $doctor]);
 	}
-
+	//Delete a doctor
 	public function deleteDoctor($id = null) {
 
 		$doctor = Doctor::find($id);

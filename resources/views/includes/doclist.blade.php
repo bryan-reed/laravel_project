@@ -27,6 +27,9 @@
 	                    </div>
 	                    <div class="media-body">
 	                        <h2 class="media-heading">{{$doctor->first_name.' '.$doctor->last_name}}</h2>
+	                        @if($doctor->reviews()->count() > 0)
+	                        	<span class="badge">{{number_format($doctor->reviews()->avg('rating'), 1) + 0}} / 5 Stars</span>
+	                        @endif
 	                        <p>{{$doctor->bio}}</p>
 	                    </div>
 	                </li>

@@ -13,10 +13,6 @@
 			@yield('content')
     	</div>
     	@include('includes.footer')
-    	<?php
-    		if(count($errors))
-    			print_r($errors);
-    		?>
     	<script type="text/javascript">
     		var app = {};
     		app.loginError = {{($errors->has('si_email') || $errors->has('si_password') || $errors->has('login'))?1:0}};
