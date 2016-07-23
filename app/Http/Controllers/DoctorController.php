@@ -84,12 +84,20 @@ class DoctorController extends Controller
 	public function searchDoctors(Request $request) {
 		$doctors = array();
 		$words = explode(' ', $request['name']);
+		$sortField = 'first_name';
+		$sort = $request['sort'];
+		if(!$sort) {
+			$sortField = 'id';
+			$sort = 'desc';
+		}
+			
 		$doctors = Doctor::where(function($query) use ($words) {
 			foreach ($words as $value) {
 				$query->orWhere('first_name', 'like', "%{$value}%");
 				$query->orWhere('last_name', 'like', "%{$value}%");
 			}
 		})
+		->orderBy($sortField, $sort)
 		->get();
 		
 		return view('welcome', ['doctors' => $doctors, 'route' => 'doctor.view']);

@@ -3,11 +3,18 @@
 		<div class="row bottom_buffer">
 	    	<div class="col-xs-6"><h1>Doctors</h1></div>
 	            <div class="col-xs-6">
-	              <form class="form-inline search-form" method="get" action="{{route('doctor.search')}}">
+	              <form class="form-inline search-form" method="get" action="{{route('doctor.search')}}" id="searchForm">
 	                <div class="form-group">
 	                	<label for="doctorSearch" class="sr-only">Search By Name</label>
 	                	<input type="text" class="form-control" placeholder="Search by name" name="name" id="doctorSearch" value="{{Request::get('name')}}" />
 	                </div>
+	                <div class="form-group">
+		                <select class="form-control sort-search" name="sort">
+							<option value=""@if(Request::get('sort') == "") selected @endif>Sort By</option>
+							<option value="asc"@if(Request::get('sort') == "asc") selected @endif>Name A-Z</option>
+							<option value="desc"@if(Request::get('sort') == "desc") selected @endif>Name Z-A</option>
+						</select>
+					</div>
 	                <div class="form-group">
 	                	<button type="submit" class="btn btn-primary btn-md btn-block">Search</button>
 	                </div>
