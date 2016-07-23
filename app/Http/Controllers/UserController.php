@@ -8,7 +8,7 @@ use Illuminate\Support\MessageBag;
 
 class UserController extends Controller
 {
-	
+	//Sign up
 	public function signUp(Request $request) 
 	{
 		$this->validate($request, [
@@ -35,7 +35,7 @@ class UserController extends Controller
 
 		return redirect()->route('home');
 	}
-
+	//Sign in
 	public function signIn(Request $request)
 	{
 		$this->validate($request, [
@@ -49,17 +49,17 @@ class UserController extends Controller
 
 		return redirect()->back()->withErrors($errors);
 	}
-
+	//Logout
 	public function logOut() {
 		Auth::logout();
 		return redirect()->route('home');
 	}
-
+	//Get my account page
 	public function myAccount() {
 
 		return view('includes.accountform');
 	}
-
+	//Update account
 	public function updateAccount(Request $request) {
 
 		//validate
@@ -85,7 +85,7 @@ class UserController extends Controller
 		$request->session()->flash('success', 'Account successfully updated!');
 		return redirect()->back();
 	}
-
+	//Get doctors
 	public function getDoctors() {
 		
 		$user = User::find(Auth::user()->id);

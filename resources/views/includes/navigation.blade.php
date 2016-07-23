@@ -2,6 +2,7 @@
     <div class="col-sm-2 sidebar">
       <ul class="nav nav-sidebar">
       	<?php
+      	//Get request name for setting active flag
       	$requestName = Request::route()->getName();
       	?>
         <li @if($requestName == 'home' || $requestName == 'doctor.search'|| $requestName == 'doctor.view') class="active" @endif ><a href="{{route('home')}}">Home <span class="sr-only">(current)</span></a></li>
